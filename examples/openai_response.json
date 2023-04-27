@@ -1,0 +1,21 @@
+{
+    "id": "id",
+    "object": "chat.completion",
+    "created": 1682607561,
+    "model": "gpt-3.5-turbo-0301",
+    "usage": {
+        "prompt_tokens": 15,
+        "completion_tokens": 45,
+        "total_tokens": 60
+    },
+    "choices": [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "The basic ingredients of beer are water, malted barley, hops, and yeast. Some beers also contain additional ingredients such as other grains (such as wheat, rye, or corn), fruits, spices, or herbs."
+            },
+            "finish_reason": "stop",
+            "index": 0
+        }
+    ]
+}
