@@ -1,0 +1,16 @@
+{
+  "name": "openai-wrapper-serverless",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^8.39.0",
+    "wrangler": "2.16.0"
+  },
+  "private": true,
+  "author": "Nikhil Nawgiri",
+  "license": "MIT",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish"
+  }
+}

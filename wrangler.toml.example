@@ -1,0 +1,7 @@
+name = "openai-wrapper"
+main = "src/index.js"
+compatibility_date = "2023-04-23"
+
+[vars]
+OPEN_AI_API_KEY = "<token>"
+BOT_TOKEN = "<token>"
