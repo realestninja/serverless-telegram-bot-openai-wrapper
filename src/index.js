@@ -5,7 +5,7 @@ const sendToTelegram = ({ token, chatId, text }) => {
 
 export default {
 	async fetch(request, env, ctx) {
-    async function gatherResponse(response) {
+    const gatherResponse = async (response) =>  {
       const { headers } = response;
       const contentType = headers.get("content-type") || "";
       return await response.json();
