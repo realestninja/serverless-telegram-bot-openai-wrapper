@@ -18,7 +18,7 @@ export default {
 
         const chatId = message.chat.id
         const promptFromUser = message.text;
-        // console.log("promptFromUser:", promptFromUser);
+        console.log("promptFromUser:", promptFromUser);
 
         const url = 'https://api.openai.com/v1/chat/completions';
         const data = {
@@ -28,7 +28,8 @@ export default {
         };
 
         async function makeRequest() {
-          try {
+          console.log("making request");
+          // try {
             const response = await fetch(url, {
               method: 'POST',
               headers: {
@@ -37,14 +38,17 @@ export default {
               },
               body: JSON.stringify(data),
             });
+            console.log("response:", response);
 
             const result = await response.json();
             const openAiResponse = result.choices[0].message.content;
+            console.log("openAiResponse:", openAiResponse);
 
             sendToTelegram({ token: BOT_TOKEN, chatId, text: openAiResponse });
-          } catch (error) {
+          // } catch (error) {
+            console.log("error:", error);
             sendToTelegram({ token: BOT_TOKEN, chatId, text: error });
-          }
+          // }
         }
 
         sendToTelegram({ token: BOT_TOKEN, chatId, text: "prompting open ai now! "});
