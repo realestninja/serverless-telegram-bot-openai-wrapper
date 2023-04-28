@@ -5,6 +5,12 @@ const sendToTelegram = ({ token, chatId, text }) => {
 
 export default {
 	async fetch(request, env, ctx) {
+    async function gatherResponse(response) {
+      const { headers } = response;
+      const contentType = headers.get("content-type") || "";
+      return await response.json();
+    }
+
     if (request.method === "POST") {
       const payload = await request.json()
       if ("message" in payload) {
@@ -27,34 +33,23 @@ export default {
           temperature: 0.7,
         };
 
-        async function makeRequest() {
-          console.log("making request");
-          // try {
-            const response = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${OPEN_AI_API_KEY}`,
-              },
-              body: JSON.stringify(data),
-            });
-            console.log("response:", response);
+        const init = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${OPEN_AI_API_KEY}`,
+          },
+          body: JSON.stringify(data),
+        };
 
-            const result = await response.json();
-            const openAiResponse = result.choices[0].message.content;
-            console.log("openAiResponse:", openAiResponse);
+        const response = await fetch(url, init);
+        const results = await gatherResponse(response);
+        const openAiResponse = results.choices[0].message.content;
 
-            sendToTelegram({ token: BOT_TOKEN, chatId, text: openAiResponse });
-          // } catch (error) {
-            console.log("error:", error);
-            sendToTelegram({ token: BOT_TOKEN, chatId, text: error });
-          // }
-        }
-
-        sendToTelegram({ token: BOT_TOKEN, chatId, text: "prompting open ai now! "});
-        makeRequest();
+        sendToTelegram({ token: BOT_TOKEN, chatId, text: openAiResponse });
       }
     }
+
     return new Response("hello world");
 	},
 };
