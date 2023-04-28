@@ -22,7 +22,11 @@ export default {
 
         const { message } = payload;
 
-        const chatId = message.chat.id
+        const chatId = message.chat.id;
+
+        if (chatId !== 105314034) return null;
+
+        console.log("chatId:", chatId);
         const promptFromUser = message.text;
         console.log("promptFromUser:", promptFromUser);
 
