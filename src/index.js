@@ -1,4 +1,3 @@
-import { gatherResponse } from "./helper";
 import { callOpenAiAPI } from "./openai";
 import { sendMessageToTelegramUser } from "./telegram";
 
