@@ -5,3 +5,4 @@ compatibility_date = "2023-04-23"
 [vars]
 OPEN_AI_API_KEY = "<token>"
 BOT_TOKEN = "<token>"
+BOT_OWNER_ID = "<id (numerical)>"

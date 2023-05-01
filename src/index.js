@@ -16,15 +16,15 @@ export default {
       if ("message" in payload) {
         const {
           BOT_TOKEN,
+          BOT_OWNER_ID,
           OPEN_AI_API_KEY,
-          // ORGANIZATION_KEY,
         } = env;
-
         const { message } = payload;
 
         const chatId = message.chat.id;
 
-        if (chatId !== 105314034) return null;
+        // ignore unknown people
+        if (chatId !== Number(BOT_OWNER_ID)) return null;
 
         console.log("chatId:", chatId);
         const promptFromUser = message.text;
