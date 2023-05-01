@@ -23,6 +23,7 @@ export const callOpenAiAPI = async ({ prompt, bearer }) => {
   };
 
   const response = await fetch(API_URL, init);
-  const gatheredContent = await gatherResponse(response);
+  const gatheredContent = JSON.parse(await gatherResponse(response));
+  // console.log(JSON.stringify(gatheredContent, null, 4));
   return gatheredContent.choices[0].message.content;
 }
