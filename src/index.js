@@ -10,6 +10,9 @@ export default {
           BOT_TOKEN,
           BOT_OWNER_ID,
           OPEN_AI_API_KEY,
+          CF_ACCOUNT_IDENTIFIER,
+          CF_KV_NAMESPACE_IDENTIFIER,
+          CF_API_TOKEN,
         } = env;
         const { message } = payload;
 
