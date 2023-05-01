@@ -20,7 +20,7 @@ export const gatherResponse = async (response) =>  {
 const buildKvApiUrl = ({ accountIdentifier, kvNamespace, key }) => `https://api.cloudflare.com/client/v4/accounts/${accountIdentifier}/storage/kv/namespaces/${kvNamespace}/values/${key}`;
 
 export const writeKv = async ({ accountIdentifier, kvNamespace, apiToken, key, value }) => {
-  const kvWriteApiUrl = `https://api.cloudflare.com/client/v4/accounts/${accountIdentifier}/storage/kv/namespaces/${kvNamespace}/values/${key}`;
+  const kvApiUrl = buildKvApiUrl({ accountIdentifier, kvNamespace, key });
 
   const body = typeof(value) !== "string"
     ? JSON.stringify(value)
@@ -34,7 +34,21 @@ export const writeKv = async ({ accountIdentifier, kvNamespace, apiToken, key, v
     },
   };
 
-  const cfApiResponse= await fetch(kvWriteApiUrl, options);
-  // const responseData = await gatherResponse(cfApiResponse);
+  const cfApiWriteResponse = await fetch(kvApiUrl, options);
+  // const responseData = await gatherResponse(cfApiWriteResponse);
   // console.log(JSON.stringify(responseData, null, 4));
+}
+
+export const readKv = async ({ accountIdentifier, kvNamespace, apiToken, key }) => {
+  const kvApiUrl = buildKvApiUrl({ accountIdentifier, kvNamespace, key });
+
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${apiToken}`
+    },
+  };
+
+  const cfApiReadResponse = await fetch(kvApiUrl, options);
+  return await gatherResponse(cfApiReadResponse);
 }
