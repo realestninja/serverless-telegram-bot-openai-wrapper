@@ -1,3 +1,5 @@
+import { handleNewUser } from "./handleNewUser";
+import { readKv, writeKv } from "./cfUtilities";
 import { callOpenAiAPI } from "./openai";
 import { sendMessageToTelegramUser } from "./telegram";
 
