@@ -5,8 +5,6 @@ const API_URL = 'https://api.openai.com/v1/chat/completions';
 export const callOpenAiAPI = async ({ prompt, bearer }) => {
   console.log("prompt:", prompt);
 
-  const API_URL = 'https://api.openai.com/v1/chat/completions';
-
   const data = {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
