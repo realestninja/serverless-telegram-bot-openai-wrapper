@@ -35,8 +35,8 @@ export const writeKv = async ({ accountIdentifier, kvNamespace, apiToken, key, v
   };
 
   const cfApiWriteResponse = await fetch(kvApiUrl, options);
-  // const responseData = await gatherResponse(cfApiWriteResponse);
-  // console.log(JSON.stringify(responseData, null, 4));
+  const responseData = await gatherResponse(cfApiWriteResponse);
+  return responseData;
 }
 
 export const readKv = async ({ accountIdentifier, kvNamespace, apiToken, key }) => {
@@ -54,9 +54,10 @@ export const readKv = async ({ accountIdentifier, kvNamespace, apiToken, key }) 
   const parsedResponse = JSON.parse(gatheredResponse);
 
   return (
-    Object.keys(parsedResponse).includes("success")
+    typeof parsedResponse === "object"
+    && Object.keys(parsedResponse).includes("success")
     && Object.keys(parsedResponse).includes("errors")
   )
-    ? {}
+    ? undefined
     : parsedResponse;
 }
