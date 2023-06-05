@@ -17,7 +17,7 @@ export const handleIncomingMessage = async ({
   const kvProps = { accountIdentifier, kvNamespace, apiToken, key: "users" };
   const allowedUsers = await readKv({ ...kvProps }) || [];
 
-  if (!allowedUsers.includes(chatId)) {
+  if (!allowedUsers.includes(chatId.toString())) {
     await sendMessageToNewUserWhoNeedsPermission({ token, chatId });
   } else {
     const openAiResponse = await callOpenAiAPI({ prompt: message.text, bearer: openAiBearer });
