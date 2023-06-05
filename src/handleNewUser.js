@@ -49,13 +49,17 @@ export const activateNewUser = async ({
   userIdOfNewUser,
   accountIdentifier,
   kvNamespace,
-  apiToken,
+  kvToken,
 }) => {
-  const kvProps = { accountIdentifier, kvNamespace, apiToken, key: "users" };
+  const kvProps = { accountIdentifier, kvNamespace, apiToken: kvToken, key: "users" };
   const users = await readKv({ ...kvProps }) || [];
 
   if (!users.includes(userIdOfNewUser)) {
     users.push(userIdOfNewUser);
-    await writeKv({ value: users, ...kvProps });
+    console.log("adding new user: ", userIdOfNewUser);
+    const userApprovalStatus = await writeKv({ value: users, ...kvProps });
+    const { success } = JSON.parse(userApprovalStatus);
+    return success;
   }
+  return true;
 }
