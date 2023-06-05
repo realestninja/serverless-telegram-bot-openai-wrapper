@@ -1,13 +1,61 @@
+import { readKv, writeKv } from "./cfUtilities";
+import { OWNER_ACTION_GRANT_PERMISSION, USER_ACTION_REQUEST_PERMISSION } from "./constants/callbackConstants";
 import { sendMessageToTelegramUser } from "./telegram";
 
-const replyMarkup = {
+const markupWithButtonForPermissionRequest = {
   inline_keyboard: [
-    [{ text: 'Some button text 1', callback_data: '1' }],
-    [{ text: 'Some button text 2', callback_data: '2' }],
-    [{ text: 'Some button text 3', callback_data: '3' }]
+    [{
+      text: "Request permission",
+      callback_data: USER_ACTION_REQUEST_PERMISSION,
+    }],
   ],
 };
 
-export const handleNewUser = async ({ BOT_TOKEN, chatId }) => {
-  return await sendMessageToTelegramUser({ token: BOT_TOKEN, chatId, text: "Permission required.", replyMarkup });
+export const sendMessageToNewUserWhoNeedsPermission = async ({ BOT_TOKEN, chatId }) => {
+  return await sendMessageToTelegramUser({
+    token: BOT_TOKEN,
+    chatId,
+    text: "Permission required.",
+    replyMarkup: markupWithButtonForPermissionRequest,
+  });
 };
+
+
+const markupWithButtonToGrantPermission = ({ requestedBy }) => ({
+  inline_keyboard: [
+    [{
+      text: "Grant Permission",
+      callback_data: `${OWNER_ACTION_GRANT_PERMISSION}_DATA:${requestedBy}`,
+    }],
+  ],
+});
+
+export const handlePermissionRequest = async ({ BOT_TOKEN, BOT_OWNER_ID, payload }) => {
+  const { callback_query } = payload;
+  const { id, first_name, username } = callback_query.from;
+  const permissionRequestMessageToBotOwner = `${first_name} ${username} with the id: ${id} is asking for permission.`;
+
+  const replyMarkup = markupWithButtonToGrantPermission({ requestedBy: id });
+
+  return await sendMessageToTelegramUser({
+    token: BOT_TOKEN,
+    chatId: BOT_OWNER_ID,
+    text: permissionRequestMessageToBotOwner,
+    replyMarkup,
+  });
+};
+
+export const activateNewUser = async ({
+  userIdOfNewUser,
+  accountIdentifier,
+  kvNamespace,
+  apiToken,
+}) => {
+  const kvProps = { accountIdentifier, kvNamespace, apiToken, key: "users" };
+  const users = await readKv({ ...kvProps }) || [];
+
+  if (!users.includes(userIdOfNewUser)) {
+    users.push(userIdOfNewUser);
+    await writeKv({ value: users, ...kvProps });
+  }
+}
