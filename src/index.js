@@ -1,6 +1,7 @@
 import { OWNER_ACTION_GRANT_PERMISSION, USER_ACTION_REQUEST_PERMISSION } from "./constants/callbackConstants";
 import { handleIncomingMessage } from "./messageHandler";
 import { activateNewUser, handlePermissionRequest } from "./handleNewUser";
+import { sendMessageToTelegramUser } from "./telegram";
 
 export default {
 	async fetch(request, env, ctx) {
@@ -30,12 +31,19 @@ export default {
 
         if (callbackAction.includes(OWNER_ACTION_GRANT_PERMISSION)) {
           const userIdOfNewUser = callbackAction.split("DATA:")[1];
-          await activateNewUser({
+          const successfulActivation = await activateNewUser({
             userIdOfNewUser,
             accountIdentifier: CF_ACCOUNT_IDENTIFIER,
             kvNamespace: CF_KV_NAMESPACE_IDENTIFIER,
-            apiToken: CF_API_TOKEN,
+            kvToken: CF_API_TOKEN,
           });
+          if (successfulActivation) {
+            sendMessageToTelegramUser({
+              token: BOT_TOKEN,
+              chatId: userIdOfNewUser,
+              text: "Permission has been granted.",
+            });
+          }
           return new Response("OK");
         }
       }
