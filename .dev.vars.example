@@ -1,0 +1,6 @@
+BOT_TOKEN = "<token>"
+OPEN_AI_API_KEY = "<token>"
+BOT_OWNER_ID = "<id (numerical)>"
+CF_ACCOUNT_IDENTIFIER = "<account identifier>"
+CF_KV_NAMESPACE_IDENTIFIER = "<namespace identifier>"
+CF_API_TOKEN = "<token>"
