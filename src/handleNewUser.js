@@ -11,9 +11,9 @@ const markupWithButtonForPermissionRequest = {
   ],
 };
 
-export const sendMessageToNewUserWhoNeedsPermission = async ({ BOT_TOKEN, chatId }) => {
+export const sendMessageToNewUserWhoNeedsPermission = async ({ token, chatId }) => {
   return await sendMessageToTelegramUser({
-    token: BOT_TOKEN,
+    token,
     chatId,
     text: "Permission required.",
     replyMarkup: markupWithButtonForPermissionRequest,
@@ -30,7 +30,7 @@ const markupWithButtonToGrantPermission = ({ requestedBy }) => ({
   ],
 });
 
-export const handlePermissionRequest = async ({ BOT_TOKEN, BOT_OWNER_ID, payload }) => {
+export const handlePermissionRequest = async ({ token, ownerId, payload }) => {
   const { callback_query } = payload;
   const { id, first_name, username } = callback_query.from;
   const permissionRequestMessageToBotOwner = `${first_name} ${username} with the id: ${id} is asking for permission.`;
@@ -38,8 +38,8 @@ export const handlePermissionRequest = async ({ BOT_TOKEN, BOT_OWNER_ID, payload
   const replyMarkup = markupWithButtonToGrantPermission({ requestedBy: id });
 
   return await sendMessageToTelegramUser({
-    token: BOT_TOKEN,
-    chatId: BOT_OWNER_ID,
+    token,
+    chatId: ownerId,
     text: permissionRequestMessageToBotOwner,
     replyMarkup,
   });

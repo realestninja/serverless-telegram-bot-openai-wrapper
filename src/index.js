@@ -1,4 +1,3 @@
-import { readKv, writeKv } from "./cfUtilities";
 import { OWNER_ACTION_GRANT_PERMISSION, USER_ACTION_REQUEST_PERMISSION } from "./constants/callbackConstants";
 import { handleIncomingMessage } from "./messageHandler";
 import { activateNewUser, handlePermissionRequest } from "./handleNewUser";
@@ -22,7 +21,11 @@ export default {
         console.log("callbackAction:", callbackAction);
 
         if (callbackAction === USER_ACTION_REQUEST_PERMISSION) {
-          await handlePermissionRequest({ payload, BOT_TOKEN, BOT_OWNER_ID });
+          await handlePermissionRequest({
+            payload,
+            token: BOT_TOKEN,
+            ownerId: BOT_OWNER_ID,
+          });
         }
 
         if (callbackAction.includes(OWNER_ACTION_GRANT_PERMISSION)) {
@@ -39,7 +42,14 @@ export default {
 
       // handle messages
       if ("message" in payload) {
-        await handleIncomingMessage({ payload, BOT_TOKEN, BOT_OWNER_ID, OPEN_AI_API_KEY })
+        await handleIncomingMessage({
+          payload,
+          token: BOT_TOKEN,
+          openAiBearer: OPEN_AI_API_KEY,
+          accountIdentifier: CF_ACCOUNT_IDENTIFIER,
+          kvNamespace: CF_KV_NAMESPACE_IDENTIFIER,
+          apiToken: CF_API_TOKEN,
+        })
       }
     }
 
