@@ -50,5 +50,13 @@ export const readKv = async ({ accountIdentifier, kvNamespace, apiToken, key }) 
   };
 
   const cfApiReadResponse = await fetch(kvApiUrl, options);
-  return await gatherResponse(cfApiReadResponse);
+  const gatheredResponse = await gatherResponse(cfApiReadResponse)
+  const parsedResponse = JSON.parse(gatheredResponse);
+
+  return (
+    Object.keys(parsedResponse).includes("success")
+    && Object.keys(parsedResponse).includes("errors")
+  )
+    ? {}
+    : parsedResponse;
 }
