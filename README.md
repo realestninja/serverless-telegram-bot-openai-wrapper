@@ -1,4 +1,11 @@
 # OpenAI Wrapper Telegram Bot (serverless @ Cloudflare)
+
+![Preview](previews/swappy-20230605_181239.png)
+
+## Features
+* You can send a message to this telegram bot and it will act as a proxy between you and the openAI API.
+* User management is included so that unknown users can't use this bot. The user-management required Cloudflare KV.
+
 ## Requirements
 * either have `node` version **18.12.0** or have `nvm` installed so it can manage your version
 
@@ -10,7 +17,7 @@ nvm use
 yarn install
 ```
 
-Add the required tokens to the `.dev.vars` and `wrangler.toml` files.
+Add all the required tokens to the `.dev.vars` and `wrangler.toml` files.
 You require a Cloudflare Worker KV to handle user management.
 
 ## Development
