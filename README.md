@@ -3,8 +3,8 @@
 ![Preview](previews/swappy-20230605_181239.png)
 
 ## Features
-* You can send a message to this telegram bot and it will act as a proxy between you and the openAI API.
-* User management is included so that unknown users can't use this bot. The user-management required Cloudflare KV.
+* You can send a message to the telegram bot and it will act as a proxy between you and the openAI API.
+* User management is included so that unknown users won't have access. The user-management required Cloudflare KV.
 
 ## Requirements
 * either have `node` version **18.12.0** or have `nvm` installed so it can manage your version
