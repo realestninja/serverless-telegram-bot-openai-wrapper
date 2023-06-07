@@ -13,6 +13,7 @@ export default {
         CF_ACCOUNT_IDENTIFIER,
         CF_KV_NAMESPACE_IDENTIFIER,
         CF_API_TOKEN,
+        AI_PERSONALITY,
       } = env;
       const payload = await request.json()
 
@@ -57,6 +58,7 @@ export default {
           accountIdentifier: CF_ACCOUNT_IDENTIFIER,
           kvNamespace: CF_KV_NAMESPACE_IDENTIFIER,
           apiToken: CF_API_TOKEN,
+          aiPersonality: AI_PERSONALITY,
         })
       }
     }

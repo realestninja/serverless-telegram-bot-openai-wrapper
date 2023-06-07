@@ -10,6 +10,7 @@ export const handleIncomingMessage = async ({
   apiToken,
   kvNamespace,
   payload,
+  aiPersonality,
 }) => {
   const { message } = payload;
   const chatId = message.chat.id;
@@ -20,7 +21,7 @@ export const handleIncomingMessage = async ({
   if (!allowedUsers.includes(chatId.toString())) {
     await sendMessageToNewUserWhoNeedsPermission({ token, chatId });
   } else {
-    const openAiResponse = await callOpenAiAPI({ prompt: message.text, bearer: openAiBearer });
+    const openAiResponse = await callOpenAiAPI({ prompt: message.text, bearer: openAiBearer, aiPersonality });
     await sendMessageToTelegramUser({ token, chatId, text: openAiResponse });
   };
 };
