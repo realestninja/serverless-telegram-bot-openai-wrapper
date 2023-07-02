@@ -3,7 +3,7 @@ import { sendMessageToNewUserWhoNeedsPermission } from "./handleNewUser";
 import { callOpenAiAPI } from "./openai";
 import {
   sendMessageToTelegramUser,
-  sendTypingAction,
+  sendContinuousTypingAction,
 } from "./telegram";
 
 export const handleIncomingMessage = async ({
@@ -24,8 +24,9 @@ export const handleIncomingMessage = async ({
   if (!allowedUsers.includes(chatId.toString())) {
     await sendMessageToNewUserWhoNeedsPermission({ token, chatId });
   } else {
-    sendTypingAction({ token, chatId });
+    const continuousTypingActionInterval = sendContinuousTypingAction({ token, chatId });
     const openAiResponse = await callOpenAiAPI({ prompt: message.text, bearer: openAiBearer, aiPersonality });
+    clearInterval(continuousTypingActionInterval);
     await sendMessageToTelegramUser({ token, chatId, text: openAiResponse });
   };
 };
