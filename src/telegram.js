@@ -17,7 +17,7 @@ export const sendMessageToTelegramUser = async ({ token, chatId, text, replyMark
   }
 };
 
-export const sendTypingAction = ({ token, chatId }) => {
+const sendTypingAction = ({ token, chatId }) => {
   const apiUrl = `https://api.telegram.org/bot${token}/sendChatAction`;
   fetch(apiUrl, {
     method: "POST",
@@ -32,4 +32,12 @@ export const sendTypingAction = ({ token, chatId }) => {
   .catch(error => {
     console.error("Error sending typing action:", error);
   });
+};
+
+export const sendContinuousTypingAction = ({ token, chatId }) => {
+  sendTypingAction({ token, chatId });
+  const typingInterval = setInterval(() => {
+    sendTypingAction({ token, chatId });
+  }, 5000);
+  return typingInterval;
 };
