@@ -1,7 +1,10 @@
 import { readKv } from "./cfUtilities";
 import { sendMessageToNewUserWhoNeedsPermission } from "./handleNewUser";
 import { callOpenAiAPI } from "./openai";
-import { sendMessageToTelegramUser } from "./telegram";
+import {
+  sendMessageToTelegramUser,
+  sendTypingAction,
+} from "./telegram";
 
 export const handleIncomingMessage = async ({
   token,
@@ -21,6 +24,7 @@ export const handleIncomingMessage = async ({
   if (!allowedUsers.includes(chatId.toString())) {
     await sendMessageToNewUserWhoNeedsPermission({ token, chatId });
   } else {
+    sendTypingAction({ token, chatId });
     const openAiResponse = await callOpenAiAPI({ prompt: message.text, bearer: openAiBearer, aiPersonality });
     await sendMessageToTelegramUser({ token, chatId, text: openAiResponse });
   };
