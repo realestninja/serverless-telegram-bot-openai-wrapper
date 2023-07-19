@@ -1,6 +1,6 @@
 import { OWNER_ACTION_GRANT_PERMISSION, USER_ACTION_REQUEST_PERMISSION } from "./constants/callbackConstants";
 import { handleIncomingMessage } from "./messageHandler";
-import { activateNewUser, handlePermissionRequest } from "./handleNewUser";
+import { activateNewUser, handlePermissionRequest, sendMessageToNewUserWhoNeedsPermission } from "./handleNewUser";
 import { sendMessageToTelegramUser } from "./telegram";
 
 export default {
@@ -51,17 +51,26 @@ export default {
         }
       }
 
-      // handle messages
-      if ("message" in payload) {
-        await handleIncomingMessage({
-          payload,
-          token: BOT_TOKEN,
-          openAiBearer: OPEN_AI_API_KEY,
-          accountIdentifier: CF_ACCOUNT_IDENTIFIER,
-          kvNamespace: CF_KV_NAMESPACE_IDENTIFIER,
-          apiToken: CF_API_TOKEN,
-          aiPersonality: AI_PERSONALITY,
-        })
+      // handle incoming text messages
+      if ("message" in payload ) {
+        const messageText = payload.message.text;
+        const chatId = payload.message.chat.id;
+
+        if (messageText.startsWith('/start')) {
+          // Handle /start command
+          await sendMessageToNewUserWhoNeedsPermission({ token: BOT_TOKEN, chatId });
+        } else {
+          // default message handler (call open ai)
+          await handleIncomingMessage({
+            payload,
+            token: BOT_TOKEN,
+            openAiBearer: OPEN_AI_API_KEY,
+            accountIdentifier: CF_ACCOUNT_IDENTIFIER,
+            kvNamespace: CF_KV_NAMESPACE_IDENTIFIER,
+            apiToken: CF_API_TOKEN,
+            aiPersonality: AI_PERSONALITY,
+          })
+        }
       }
     }
 
