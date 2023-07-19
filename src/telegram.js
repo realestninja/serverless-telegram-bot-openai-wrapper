@@ -1,5 +1,5 @@
 import { gatherResponse } from "./cfUtilities";
-import { isEmpty } from "./helper";
+import { isEmpty } from "./helper/javascriptHelper";
 
 export const sendMessageToTelegramUser = async ({ token, chatId, text, replyMarkup = {} }) => {
   const telegramSendToUserUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${text}${!isEmpty(replyMarkup) ? "&reply_markup=" + JSON.stringify(replyMarkup) : ""}`;
