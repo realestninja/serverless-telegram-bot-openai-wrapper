@@ -61,5 +61,5 @@ export const activateNewUser = async ({
     const { success } = JSON.parse(userApprovalStatus);
     return success;
   }
-  return true;
+  return false;
 }
