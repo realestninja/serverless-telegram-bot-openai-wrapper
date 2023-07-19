@@ -22,6 +22,7 @@ export default {
         const callbackAction = payload.callback_query.data;
         console.log("callbackAction:", callbackAction);
 
+        // user has requested permission
         if (callbackAction === USER_ACTION_REQUEST_PERMISSION) {
           await handlePermissionRequest({
             payload,
@@ -30,6 +31,7 @@ export default {
           });
         }
 
+        // owner has granted permission
         if (callbackAction.includes(OWNER_ACTION_GRANT_PERMISSION)) {
           const userIdOfNewUser = callbackAction.split("DATA:")[1];
           const successfulActivation = await activateNewUser({
